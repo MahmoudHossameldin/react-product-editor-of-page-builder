@@ -1,24 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from 'react';
+import AppRoutes from './Routes';
+import Header from './components/Header';
+import Sidebar from './components/Sidebar';
+import { useAppDispatch, fetchProduct, useAppSelector } from './store';
 
 function App() {
+  const { data, loading, error } = useAppSelector((state) => state.product);
+  const dispatch = useAppDispatch();
+  console.log(data, error);
+
+  useEffect(() => {
+    dispatch(fetchProduct());
+  }, [dispatch]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Header />
+      {loading && <div className='loader'></div>}
+      <div className='App flex max-w-app mx-auto'>
+        <Sidebar />
+        {data && <AppRoutes />}
+        {error && (
+          <div className='font-bold text-4xl mx-auto mt-5'>{error}</div>
+        )}
+      </div>
     </div>
   );
 }

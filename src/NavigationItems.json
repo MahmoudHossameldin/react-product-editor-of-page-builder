@@ -1,0 +1,14 @@
+{
+  "pages": [
+    {
+      "label": "Main Page",
+      "url": "/",
+      "icon": "home.svg"
+    },
+    {
+      "label": "Product",
+      "url": "/product",
+      "icon": "product.svg"
+    }
+  ]
+}
