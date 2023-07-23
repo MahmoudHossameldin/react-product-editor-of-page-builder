@@ -9,8 +9,8 @@ function Breadcrumbs() {
   const chevron = <img src={right} alt='inner page' className='mx-[.625rem]' />;
 
   return (
-    <div className='flex justify-between flex-wrap'>
-      <div className='flex mb-5'>
+    <div className='flex justify-between flex-wrap text-greyText'>
+      <div className='flex mb-5 items-center'>
         <img src={home} alt='homepage' />
         {chevron}
         <p>Offer</p>

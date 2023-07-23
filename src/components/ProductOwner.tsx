@@ -1,17 +1,32 @@
 import React from 'react';
 import photo from '../assets/photo.svg';
 import { useAppSelector } from '../store';
+import className from 'classnames';
 
-function ProductOwner() {
+type ProductOwnerProps = {
+  sidebar?: string;
+  owner?: string;
+};
+
+function ProductOwner({ sidebar, owner }: ProductOwnerProps) {
+  const classes = className('flex items-center', {
+    'text-greyTitles gap-[.9375rem]': sidebar,
+    'text-greyText gap-[.625rem]': owner,
+  });
+  const nameClasses = className('font-semibold', {
+    'text-lg': sidebar,
+    'text-sm mb-[.3125rem]': owner,
+  });
+
   const { data } = useAppSelector((state) => state.product);
 
   return (
-    <div className='flex items-center gap-[.9375rem] text-greyTitles'>
+    <div className={classes}>
       <div>
         <img className='rounded-[50%]' src={photo} alt='user' />
       </div>
       <div>
-        <p className='font-semibold text-lg'>
+        <p className={nameClasses}>
           {data?.user.firstName} {data?.user.lastName}
         </p>
         <p className='text-sm'>{data?.company.name}</p>

@@ -7,6 +7,7 @@ module.exports = {
       white: '#ffffff',
       greyTitles: '#374151',
       greyText: '#6B7280',
+      greyBorder: '#E5E7EB',
     },
     extend: {
       maxWidth: {
