@@ -1,17 +1,18 @@
 import React, { useMemo } from 'react';
 import location from '../assets/location.svg';
 import { useAppSelector } from '../store';
-import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
+import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
 
 function Map() {
   const { data } = useAppSelector((state) => state.product);
   const address = data?.company.address;
-  const center = useMemo(() => {
-    return {
-      lat: parseFloat(address?.latitude || '0'),
-      lng: parseFloat(address?.longitude || '0'),
-    };
-  }, [address]);
+  const center = useMemo(
+    () => ({
+      lat: parseFloat(address?.latitude || ''),
+      lng: parseFloat(address?.longitude || ''),
+    }),
+    [address?.latitude, address?.longitude]
+  );
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY || '',
   });
@@ -30,9 +31,7 @@ function Map() {
         )}
       </div>
       <div className='w-full h-[12.5rem] mt-[.625rem]'>
-        {!isLoaded ? (
-          <h1>Loading map...</h1>
-        ) : (
+        {isLoaded && (
           <GoogleMap
             mapContainerClassName='map-container'
             center={center}
@@ -41,7 +40,7 @@ function Map() {
               disableDefaultUI: true,
             }}
           >
-            <Marker position={center} />
+            <MarkerF position={center} />
           </GoogleMap>
         )}
       </div>

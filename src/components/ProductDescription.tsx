@@ -6,7 +6,7 @@ function ProductDescription() {
   const { data } = useAppSelector((state) => state.product);
 
   return (
-    <div>
+    <div className='p-5'>
       <h1 className='font-semibold mb-[.625rem]'>{data?.name}</h1>
       {data?.description && (
         <p

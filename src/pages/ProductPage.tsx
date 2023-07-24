@@ -5,6 +5,8 @@ import ProductDescription from '../components/ProductDescription';
 import ProductOwner from '../components/ProductOwner';
 import Map from '../components/Map';
 import CompanyLogo from '../components/CompanyLogo';
+import ProductVideo from '../components/ProductVideo';
+import OfferDetails from '../components/OfferDetails';
 
 function ProductPage() {
   return (
@@ -12,23 +14,19 @@ function ProductPage() {
       <Breadcrumbs />
       <div className='md:flex bg-white rounded-md border border-greyBorder'>
         <div className='md:w-[66.229%]'>
-          <div>
-            <ProductImage />
-          </div>
-          <div className='p-5'>
-            <ProductDescription />
-          </div>
+          <ProductImage />
+          <ProductDescription />
         </div>
-        <div className='p-5 border-l border-greyBorder md:w-[32.138%] md:pr-0'>
+        <div className='p-5 md:border-l border-greyBorder md:w-[32.138%] md:pr-0'>
           <div>
             <CompanyLogo />
             <ProductOwner owner='owner' />
           </div>
-          <div>
-            <Map />
-          </div>
+          <Map />
         </div>
       </div>
+      <ProductVideo />
+      <OfferDetails />
     </div>
   );
 }
