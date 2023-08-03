@@ -1,10 +1,9 @@
 import React from 'react';
 import { useAppSelector } from '../store';
-import technology from '../assets/technology.svg';
-import model from '../assets/model.svg';
-import trl from '../assets/trl.svg';
-import costs from '../assets/costs.svg';
-import OfferDetailsItem from './OfferDetailsItem';
+import Technology from './Technology';
+import BusinessModel from './BusinessModel';
+import Trl from './Trl';
+import Cost from './Cost';
 
 function OfferDetails() {
   const { data } = useAppSelector((state) => state.product);
@@ -15,32 +14,12 @@ function OfferDetails() {
       {data && (
         <div>
           <div className='md:flex md:gap-x-10'>
-            <OfferDetailsItem
-              imgSrc={technology}
-              altText='categories'
-              title='Technology'
-              data={data.categories}
-            />
-            <OfferDetailsItem
-              imgSrc={model}
-              altText='business model'
-              title='Business Model'
-              data={data.businessModels}
-            />
+            <Technology />
+            <BusinessModel />
           </div>
           <div className='md:flex md:gap-x-10 justify-between'>
-            <OfferDetailsItem
-              imgSrc={trl}
-              altText='Implementation Time'
-              title='Implementation Time'
-              data={[data.trl]}
-            />
-            <OfferDetailsItem
-              imgSrc={costs}
-              altText='Costs'
-              title='Costs'
-              data={[{ id: 1, name: data.investmentEffort }]}
-            />
+            <Trl />
+            <Cost />
           </div>
         </div>
       )}

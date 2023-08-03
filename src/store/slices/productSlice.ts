@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Product, ProductState } from '../types';
 import { fetchProduct } from '../thunks/fetchProduct';
+import { updateProduct } from '../thunks/updateProduct';
 
 const initialState: ProductState = {
   data: null,
@@ -26,11 +27,18 @@ const productSlice = createSlice({
           state.error = null;
         }
       )
-      .addCase(fetchProduct.rejected, (state) => {
+      .addCase(fetchProduct.rejected, (state, action) => {
         state.data = null;
         state.loading = false;
         state.error = 'Failed to fetch product data.';
-      });
+        console.log(action);
+      })
+      .addCase(
+        updateProduct.fulfilled,
+        (state, action: PayloadAction<Product>) => {
+          state.data = action.payload;
+        }
+      );
   },
 });
 

@@ -7,7 +7,6 @@ import { useAppDispatch, fetchProduct, useAppSelector } from './store';
 function App() {
   const { data, loading, error } = useAppSelector((state) => state.product);
   const dispatch = useAppDispatch();
-  console.log(data, error);
 
   useEffect(() => {
     dispatch(fetchProduct());

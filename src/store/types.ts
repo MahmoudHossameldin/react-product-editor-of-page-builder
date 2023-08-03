@@ -1,5 +1,35 @@
 // /src/store/types.ts
 
+export type Trl = {
+  id: string;
+  name: string;
+};
+export type Type = {
+  id?: string;
+  name: string;
+};
+export type Category = {
+  id: string;
+  name: string;
+};
+export type Model = {
+  id: string;
+  name: string;
+};
+
+export type EditedData = {
+  name?: string;
+  description?: string;
+  picture?: string;
+  type?: Type | null;
+  categories?: Category[];
+  trl?: Trl | null;
+  video?: string;
+  businessModels?: Model[];
+  loading?: boolean;
+  error?: string | null;
+};
+
 // Product type
 export type Product = {
   id: number;
@@ -7,22 +37,16 @@ export type Product = {
   description: string;
   picture: string;
   type: {
-    id: number;
+    id: string;
     name: string;
   };
-  categories: {
-    id: number;
-    name: string;
-  }[];
+  categories: Category[];
   implementationEffortText: string | null;
   investmentEffort: string;
-  trl: {
-    id: number;
-    name: string;
-  };
+  trl: Trl;
   video: string;
   user: {
-    id: number;
+    id: string;
     email: string;
     firstName: string;
     lastName: string;
@@ -47,10 +71,7 @@ export type Product = {
       latitude: string;
     };
   };
-  businessModels: {
-    id: number;
-    name: string;
-  }[];
+  businessModels: Model[];
 };
 
 // Loading and error states

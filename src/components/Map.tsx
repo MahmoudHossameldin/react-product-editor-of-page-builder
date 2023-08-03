@@ -5,7 +5,9 @@ import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
 
 function Map() {
   const { data } = useAppSelector((state) => state.product);
+  const { isEditPage } = useAppSelector((state) => state.mode);
   const address = data?.company.address;
+
   const center = useMemo(
     () => ({
       lat: parseFloat(address?.latitude || ''),
@@ -13,6 +15,7 @@ function Map() {
     }),
     [address?.latitude, address?.longitude]
   );
+
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY || '',
   });
@@ -30,20 +33,22 @@ function Map() {
           </div>
         )}
       </div>
-      <div className='w-full h-[12.5rem] mt-[.625rem]'>
-        {isLoaded && (
-          <GoogleMap
-            mapContainerClassName='map-container'
-            center={center}
-            zoom={18}
-            options={{
-              disableDefaultUI: true,
-            }}
-          >
-            <MarkerF position={center} />
-          </GoogleMap>
-        )}
-      </div>
+      {!isEditPage && (
+        <div className='w-full h-[12.5rem] mt-[.625rem]'>
+          {isLoaded && (
+            <GoogleMap
+              mapContainerClassName='map-container'
+              center={center}
+              zoom={18}
+              options={{
+                disableDefaultUI: true,
+              }}
+            >
+              <MarkerF position={center} />
+            </GoogleMap>
+          )}
+        </div>
+      )}
     </div>
   );
 }

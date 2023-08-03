@@ -8,6 +8,7 @@ module.exports = {
       greyTitles: '#374151',
       greyText: '#6B7280',
       greyBorder: '#E5E7EB',
+      greyBorderEdit: '#D1D5DB',
     },
     extend: {
       maxWidth: {
