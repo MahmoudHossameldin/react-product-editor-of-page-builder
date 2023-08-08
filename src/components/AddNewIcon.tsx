@@ -1,21 +1,20 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useAppDispatch } from '../store';
-import { setCategory, setModel } from '../store';
+import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { useFormContext } from 'react-hook-form';
 
 type AddNewIconProps = {
   type: 'category' | 'business model';
 };
 
 function AddNewIcon({ type }: AddNewIconProps) {
-  const dispatch = useAppDispatch();
   const [addingNewLabel, setAddingNewLabel] = useState(false);
-  const [newLabelName, setNewLabelName] = useState('');
-  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const { register, getValues, setValue, watch } = useFormContext();
 
   useEffect(() => {
-    if (addingNewLabel && inputRef.current) {
-      inputRef.current.focus();
+    if (addingNewLabel) {
+      const inputElement = document.getElementById('add-input');
+      inputElement?.focus();
     }
   }, [addingNewLabel]);
 
@@ -23,37 +22,35 @@ function AddNewIcon({ type }: AddNewIconProps) {
     setAddingNewLabel(true);
   };
 
-  const handleNewLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewLabelName(e.target.value);
-  };
-
   const handleNewLabelSubmit = () => {
-    if (newLabelName.trim() !== '') {
+    if (getValues('add').trim() !== '') {
       const id = uuidv4();
       if (type === 'category') {
-        dispatch(setCategory({ id, name: newLabelName }));
+        const resetCategories = watch('categories');
+        resetCategories.push({ id, name: getValues('add') });
+        setValue('categories', resetCategories);
       } else if (type === 'business model') {
-        dispatch(setModel({ id, name: newLabelName }));
+        const resetModels = watch('businessModels');
+        resetModels.push({ id, name: getValues('add') });
+        setValue('businessModels', resetModels);
       }
-      setNewLabelName('');
+      setValue('add', '');
       setAddingNewLabel(false);
     }
   };
 
   const handleBlur = () => {
-    setNewLabelName('');
+    setValue('add', '');
     setAddingNewLabel(false);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Escape') {
-      setNewLabelName('');
+      setValue('add', '');
       setAddingNewLabel(false);
     }
-  };
-
-  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
+      e.preventDefault();
       handleNewLabelSubmit();
     }
   };
@@ -70,14 +67,13 @@ function AddNewIcon({ type }: AddNewIconProps) {
       ) : (
         <div className='py-[0.3125rem] px-[.875rem] bg-greyBorder rounded-[1.25rem] text-[.875rem] flex items-center'>
           <input
-            ref={inputRef}
+            {...register('add')}
             type='text'
+            id='add-input'
             className='bg-[transparent] border-none outline-0'
-            value={newLabelName}
-            onChange={handleNewLabelChange}
+            // value={newLabelName}
             onBlur={handleBlur}
             onKeyDown={handleKeyDown}
-            onKeyUp={handleKeyUp}
             placeholder={`Enter new ${type}`}
           />
         </div>

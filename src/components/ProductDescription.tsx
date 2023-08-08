@@ -2,17 +2,22 @@ import React from 'react';
 import { useAppSelector } from '../store';
 import Wysiwyg from './Wysiwyg';
 import DOMPurify from 'dompurify';
-import { setName, useAppDispatch } from '../store';
+import { useFormContext } from 'react-hook-form';
 
 function ProductDescription() {
   const { data } = useAppSelector((state) => state.product);
-  const { name } = useAppSelector((state) => state.productEdit);
   const { isEditPage } = useAppSelector((state) => state.mode);
-  const dispatch = useAppDispatch();
+  const { register, getValues, setValue } = useFormContext();
 
   const handleInputBlur = () => {
-    if (name === '' && data?.name) {
-      dispatch(setName(data.name));
+    if (getValues('name') === '' && data?.name) {
+      setValue('name', data.name);
+    }
+  };
+
+  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
     }
   };
 
@@ -21,11 +26,11 @@ function ProductDescription() {
       {isEditPage ? (
         <>
           <input
+            {...register('name')}
             type='text'
-            value={name}
-            onChange={(e) => dispatch(setName(e.target.value))}
             className='border px-[.625rem] py-[.3125rem] rounded-md mr-2 md:mr-0 font-semibold text-[.875rem] border-greyBorderEdit w-full mb-[.625rem]'
             onBlur={handleInputBlur}
+            onKeyDown={handleInputKeyDown}
           />
           <Wysiwyg />
         </>

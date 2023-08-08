@@ -1,55 +1,49 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useAppDispatch, useAppSelector, setPicture } from '../store';
+import React, { useState, useEffect } from 'react';
+import { useAppSelector } from '../store';
 import Type from './Type';
 import EditIcon from './EditIcon';
 import deleteIcon from '../assets/delete.svg';
+import { useFormContext } from 'react-hook-form';
 
 function ProductImage() {
   const { data } = useAppSelector((state) => state.product);
-  const { picture } = useAppSelector((state) => state.productEdit);
   const { isEditPage } = useAppSelector((state) => state.mode);
   const [editingImg, setEditingImg] = useState(false);
-  const [removedImg, setRemovedImg] = useState(false);
-  const dispatch = useAppDispatch();
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [noImg, setNoImg] = useState(false);
+  const { register, getValues, setValue } = useFormContext();
+  const imgSrc = isEditPage && getValues('picture');
 
   useEffect(() => {
-    if (removedImg && inputRef.current) {
-      inputRef.current.focus();
+    if (noImg) {
+      const inputElement = document.getElementById('img-input');
+      inputElement?.focus();
     }
-  }, [removedImg]);
+  }, [noImg]);
 
   const handleEditIconClick = () => {
-    setEditingImg(true);
+    if (getValues('picture') === '') {
+      setNoImg(true);
+    } else {
+      setEditingImg(true);
+    }
   };
 
   const handleRemoveClick = () => {
-    dispatch(setPicture(''));
-    setRemovedImg(true);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setPicture(e.target.value));
+    setNoImg(true);
   };
 
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' || e.key === 'Escape') {
+    if (e.key === 'Escape' || e.key === 'Enter') {
       setEditingImg(false);
-      setRemovedImg(false);
-      fillEmptyLabel();
+      setNoImg(false);
     }
   };
-
   const handleInputBlur = () => {
-    setEditingImg(false);
-    setRemovedImg(false);
-    fillEmptyLabel();
-  };
-
-  const fillEmptyLabel = () => {
-    if (picture === '' && data?.picture) {
-      dispatch(setPicture(data.picture));
+    if (getValues('picture') === '' && data?.picture) {
+      setValue('picture', data.picture);
     }
+    setEditingImg(false);
+    setNoImg(false);
   };
 
   return (
@@ -71,27 +65,26 @@ function ProductImage() {
               )}
             </div>
           )}
-          {removedImg && (
+          {noImg && (
             <div className='min-h-[10rem] p-2'>
               <label className='w-full mt-14 flex'>
                 New image link:
                 <input
+                  {...register('picture')}
                   className='ml-1 p-1'
-                  ref={inputRef}
+                  id='img-input'
                   type='text'
-                  value={picture}
-                  onChange={handleInputChange}
                   onKeyDown={handleInputKeyDown}
                   onBlur={handleInputBlur}
                 />
               </label>
             </div>
           )}
-          {(!isEditPage || (isEditPage && !removedImg)) && (
+          {(!isEditPage || (isEditPage && !noImg)) && (
             <img
-              src={isEditPage && picture ? picture : data?.picture}
+              src={isEditPage ? imgSrc || '' : data?.picture}
               alt='product'
-              className='w-full h-full object-contain object-center'
+              className='w-full h-full object-contain object-center min-h-[7rem]'
             />
           )}
         </>

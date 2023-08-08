@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Product, ProductState } from '../types';
+import { ProductState, Product } from '../types';
 import { fetchProduct } from '../thunks/fetchProduct';
-import { updateProduct } from '../thunks/updateProduct';
 
 const initialState: ProductState = {
   data: null,
@@ -12,7 +11,11 @@ const initialState: ProductState = {
 const productSlice = createSlice({
   name: 'product',
   initialState,
-  reducers: {},
+  reducers: {
+    updateProductData: (state, action: PayloadAction<Product>) => {
+      state.data = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchProduct.pending, (state) => {
@@ -32,14 +35,10 @@ const productSlice = createSlice({
         state.loading = false;
         state.error = 'Failed to fetch product data.';
         console.log(action);
-      })
-      .addCase(
-        updateProduct.fulfilled,
-        (state, action: PayloadAction<Product>) => {
-          state.data = action.payload;
-        }
-      );
+      });
   },
 });
+
+export const { updateProductData } = productSlice.actions;
 
 export default productSlice.reducer;

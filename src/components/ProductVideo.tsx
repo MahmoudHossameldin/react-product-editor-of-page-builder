@@ -1,11 +1,23 @@
 import React from 'react';
-import { useAppSelector, useAppDispatch, setVideo } from '../store';
+import { useAppSelector } from '../store';
+import { useFormContext } from 'react-hook-form';
 
 function ProductVideo() {
   const { data } = useAppSelector((state) => state.product);
-  const { video } = useAppSelector((state) => state.productEdit);
   const { isEditPage } = useAppSelector((state) => state.mode);
-  const dispatch = useAppDispatch();
+  const { register, getValues, setValue } = useFormContext();
+
+  const handleInputBlur = () => {
+    if (getValues('video') === '' && data?.video) {
+      setValue('video', data.video);
+    }
+  };
+
+  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  };
 
   const youtubeEmbedUrl = data?.video.replace('watch?v=', 'embed/');
 
@@ -22,9 +34,10 @@ function ProductVideo() {
       )}
       {isEditPage && (
         <input
+          {...register('video')}
+          onBlur={handleInputBlur}
+          onKeyDown={handleInputKeyDown}
           type='text'
-          value={video}
-          onChange={(e) => dispatch(setVideo(e.target.value))}
           placeholder='Add a youtube or vimeo link'
           className='border px-[.625rem] py-[.4375rem] rounded-md mr-2 md:mr-0 text-greyText text-[.875rem] border-greyBorderEdit w-full'
         />

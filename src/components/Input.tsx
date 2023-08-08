@@ -1,86 +1,69 @@
-import React, { useEffect, useRef } from 'react';
-import { Model, Category } from '../store/types';
-import { useAppDispatch, setCategory, setModel } from '../store';
-import { v4 as uuidv4 } from 'uuid';
+import React, { useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 type InputProps = {
   editItemMode: boolean;
   setEditItemMode: React.Dispatch<React.SetStateAction<boolean>>;
-  itemName: string | undefined;
-  editedCategory: Category | undefined;
-  editedModel: Model | undefined;
+  editedItemIndex: number;
+  type?: 'category' | 'business model';
 };
 
 function Input({
   editItemMode,
   setEditItemMode,
-  editedCategory,
-  editedModel,
-  itemName,
+  editedItemIndex,
+  type,
 }: InputProps) {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const dispatch = useAppDispatch();
-  const editedItemId = editedCategory?.id || editedModel?.id;
-  const editedItemName = editedCategory?.name || editedModel?.name;
+  const { register, getValues, setValue } = useFormContext();
+  const arrayType = type === 'category' ? 'categories' : 'businessModels';
 
   useEffect(() => {
-    if (editItemMode && inputRef.current) {
-      inputRef.current.focus();
+    if (editItemMode) {
+      const inputElement = document.getElementById('edit-input');
+      inputElement?.focus();
     }
   }, [editItemMode]);
 
-  const handleValueChange = (
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLSelectElement>,
-    id: string = editedItemId || uuidv4()
-  ) => {
-    checkTypeAndDispatch(id, e.target.value);
-  };
-
-  const checkTypeAndDispatch = (id: string, name: string) => {
-    if (editedCategory) {
-      dispatch(
-        setCategory({
-          id: id,
-          name: name,
-        })
-      );
-    }
-    if (editedModel) {
-      dispatch(
-        setModel({
-          id: id,
-          name: name,
-        })
-      );
-    }
-  };
-
-  const fillEmptyLabel = () => {
-    if (editedItemName === '' && itemName) {
-      checkTypeAndDispatch(editedItemId || uuidv4(), itemName);
-    }
-  };
-
   const handleInputBlur = () => {
     setEditItemMode(false);
-    fillEmptyLabel();
+    removeEmpty();
   };
 
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' || e.key === 'Escape') {
       setEditItemMode(false);
-      fillEmptyLabel();
+      removeEmpty();
+    }
+  };
+
+  const removeEmpty = () => {
+    if (
+      type === 'category' &&
+      editedItemIndex !== -1 &&
+      editedItemIndex !== undefined &&
+      getValues(`categories[${editedItemIndex}].name`) === ''
+    ) {
+      const resetCategories = getValues('categories');
+      resetCategories.splice(editedItemIndex, 1);
+      setValue('categories', resetCategories);
+    }
+    if (
+      type === 'business model' &&
+      editedItemIndex !== -1 &&
+      editedItemIndex !== undefined &&
+      getValues(`businessModels[${editedItemIndex}].name`) === ''
+    ) {
+      const resetModels = getValues('businessModels');
+      resetModels.splice(editedItemIndex, 1);
+      setValue('businessModels', resetModels);
     }
   };
 
   return (
     <input
-      ref={inputRef}
+      {...register(`${arrayType}[${editedItemIndex}].name`)}
+      id='edit-input'
       type='text'
-      value={editedItemName}
-      onChange={handleValueChange}
       className='bg-[transparent] border-none outline-0'
       onBlur={handleInputBlur}
       onKeyDown={handleInputKeyDown}

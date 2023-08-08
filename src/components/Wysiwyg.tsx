@@ -1,11 +1,10 @@
 import React from 'react';
 import 'quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
-import { setDescription, useAppDispatch, useAppSelector } from '../store';
+import { useFormContext, Controller } from 'react-hook-form';
 
 const Wysiwyg = () => {
-  const dispatch = useAppDispatch();
-  const { description } = useAppSelector((state) => state.productEdit);
+  const { control } = useFormContext();
 
   const modules = {
     toolbar: [
@@ -40,19 +39,23 @@ const Wysiwyg = () => {
     'align',
   ];
 
-  const handleDescriptionChange = (value: string) => {
-    dispatch(setDescription(value));
-  };
-
   return (
     <div>
       <div>
-        <ReactQuill
-          theme='snow'
-          modules={modules}
-          formats={formats}
-          value={description || ''}
-          onChange={handleDescriptionChange}
+        <Controller
+          name='description'
+          control={control}
+          render={({ field }) => (
+            <ReactQuill
+              value={field.value}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              ref={field.ref}
+              theme='snow'
+              modules={modules}
+              formats={formats}
+            />
+          )}
         />
       </div>
     </div>

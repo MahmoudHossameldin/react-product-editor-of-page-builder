@@ -26,8 +26,6 @@ export type EditedData = {
   trl?: Trl | null;
   video?: string;
   businessModels?: Model[];
-  loading?: boolean;
-  error?: string | null;
 };
 
 // Product type

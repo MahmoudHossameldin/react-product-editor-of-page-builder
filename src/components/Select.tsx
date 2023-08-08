@@ -1,35 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Trl } from '../store/types';
-import { useAppDispatch, setTrl } from '../store';
+import { useFormContext } from 'react-hook-form';
+import { useAppSelector } from '../store';
 
-type SelectProps = {
-  editedItem: Trl | undefined | null;
-};
-
-function Select({ editedItem }: SelectProps) {
+function Select() {
   const [trlOptions, setTrlOptions] = useState<Trl[]>([]);
-  const dispatch = useAppDispatch();
+  const { register, setValue, watch } = useFormContext();
+  const { data } = useAppSelector((state) => state.product);
 
   useEffect(() => {
     axios
       .get('https://api-test.innoloft.com/trl/')
-      .then((response) => setTrlOptions(response.data))
-      .catch((error) => console.error('Error fetching data:', error));
+      .then((response) => {
+        setTrlOptions(response.data);
+        const trlValue = watch('trl');
+        setValue('trl', trlValue || data?.trl);
+      })
+      .catch((error) =>
+        setTrlOptions([
+          { id: 'error', name: `Error fetching other TRL options!` },
+        ])
+      );
   }, []);
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = e.target.value;
     const selectedOption = trlOptions.find(
-      (option) => option.name === e.target.value
+      (option) => option.name === selectedValue
     );
-    const selectedId = selectedOption ? selectedOption.id : '';
-    dispatch(setTrl({ id: selectedId, name: e.target.value }));
-  };
 
+    setValue('trl', selectedOption);
+  };
   return (
     <span className='min-w-0'>
       <select
-        value={editedItem?.name}
+        {...register('trl.name')}
         onChange={handleSelectChange}
         className='bg-[transparent] border-none outline-0 w-full cursor-pointer'
       >
