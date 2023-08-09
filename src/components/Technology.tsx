@@ -1,17 +1,18 @@
 import React from 'react';
 import technologyIcon from '../assets/technology.svg';
 import { useAppSelector } from '../store';
-import OfferDetailsLabel from './OfferDetailsLabel';
+import DetailsLabelEdit from './DetailsLabelEdit';
 import AddNewIcon from './AddNewIcon';
 import { useFormContext } from 'react-hook-form';
 import { Category } from '../store/types';
+import DetailsLabel from './DetailsLabel';
 
 function Technology() {
   const { data } = useAppSelector((state) => state.product);
   const { isEditPage } = useAppSelector((state) => state.mode);
-  const { getValues } = useFormContext();
+  const form = useFormContext();
   const categoriesToRender = isEditPage
-    ? getValues('categories')
+    ? form?.getValues('categories')
     : data?.categories;
 
   return (
@@ -19,9 +20,13 @@ function Technology() {
       <img src={technologyIcon} alt='categories' />
       <div>Technology</div>
       <div className='col-start-2 flex flex-wrap gap-[0.3125rem] items-center'>
-        {categoriesToRender.map((item: Category) => (
-          <OfferDetailsLabel category={item} key={item.id} />
-        ))}
+        {categoriesToRender.map((item: Category) =>
+          isEditPage ? (
+            <DetailsLabelEdit category={item} key={item.id} />
+          ) : (
+            <DetailsLabel category={item} key={item.id} />
+          )
+        )}
         {isEditPage && <AddNewIcon type='category' />}
       </div>
     </div>

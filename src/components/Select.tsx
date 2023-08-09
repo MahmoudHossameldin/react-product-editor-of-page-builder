@@ -9,6 +9,15 @@ function Select() {
   const { register, setValue, watch } = useFormContext();
   const { data } = useAppSelector((state) => state.product);
 
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = e.target.value;
+    const selectedOption = trlOptions.find(
+      (option) => option.name === selectedValue
+    );
+
+    setValue('trl', selectedOption);
+  };
+
   useEffect(() => {
     axios
       .get('https://api-test.innoloft.com/trl/')
@@ -24,14 +33,6 @@ function Select() {
       );
   }, []);
 
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedValue = e.target.value;
-    const selectedOption = trlOptions.find(
-      (option) => option.name === selectedValue
-    );
-
-    setValue('trl', selectedOption);
-  };
   return (
     <span className='min-w-0'>
       <select

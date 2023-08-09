@@ -4,7 +4,9 @@ import ReactQuill from 'react-quill';
 import { useFormContext, Controller } from 'react-hook-form';
 
 const Wysiwyg = () => {
-  const { control } = useFormContext();
+  const { control, watch } = useFormContext();
+
+  watch('description');
 
   const modules = {
     toolbar: [

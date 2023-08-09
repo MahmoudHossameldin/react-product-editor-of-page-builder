@@ -39,7 +39,6 @@ function SaveButton() {
 
       setSuccess(true);
     } catch (error) {
-      console.error('Error:', error);
       setError('An error occurred while updating the product.');
     }
   };

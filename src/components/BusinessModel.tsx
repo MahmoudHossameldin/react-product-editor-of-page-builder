@@ -1,17 +1,18 @@
 import React from 'react';
 import modelIcon from '../assets/model.svg';
 import { useAppSelector } from '../store';
-import OfferDetailsLabel from './OfferDetailsLabel';
+import DetailsLabelEdit from './DetailsLabelEdit';
 import AddNewIcon from './AddNewIcon';
 import { useFormContext } from 'react-hook-form';
 import { Model } from '../store/types';
+import DetailsLabel from './DetailsLabel';
 
 function BusinessModel() {
   const { data } = useAppSelector((state) => state.product);
   const { isEditPage } = useAppSelector((state) => state.mode);
-  const { getValues } = useFormContext();
+  const form = useFormContext();
   const modelsToRender = isEditPage
-    ? getValues('businessModels')
+    ? form?.getValues('businessModels')
     : data?.businessModels;
 
   return (
@@ -19,9 +20,13 @@ function BusinessModel() {
       <img src={modelIcon} alt='business models' />
       <div>Business Model</div>
       <div className='col-start-2 flex flex-wrap gap-[0.3125rem] items-center'>
-        {modelsToRender?.map((item: Model) => (
-          <OfferDetailsLabel businessModel={item} key={item.id} />
-        ))}
+        {modelsToRender?.map((item: Model) =>
+          isEditPage ? (
+            <DetailsLabelEdit businessModel={item} key={item.id} />
+          ) : (
+            <DetailsLabel businessModel={item} key={item.id} />
+          )
+        )}
         {isEditPage && <AddNewIcon type='business model' />}
       </div>
     </div>

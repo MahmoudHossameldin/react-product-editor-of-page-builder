@@ -1,51 +1,43 @@
 import React, { useState } from 'react';
-import { useAppSelector } from '../store';
 import { Category, Model, Trl } from '../store/types';
 import Select from './Select';
 import EditIcon from './EditIcon';
-import Input from './Input';
+import EditItemInput from './EditItemInput';
 import { useFormContext } from 'react-hook-form';
 
-type OfferDetailsLabelProps = {
+type DetailsLabelEditProps = {
   trl?: Trl;
   category?: Category;
   costs?: string;
   businessModel?: Model;
 };
 
-function OfferDetailsLabel({
+function DetailsLabelEdit({
   trl,
   category,
   costs,
   businessModel,
-}: OfferDetailsLabelProps) {
+}: DetailsLabelEditProps) {
   const { getValues } = useFormContext();
-  const { isEditPage } = useAppSelector((state) => state.mode);
   const [editItemMode, setEditItemMode] = useState(false);
-  const itemName = category?.name || trl?.name || businessModel?.name || costs;
-  const editPageNotEditItemMode = !editItemMode && isEditPage;
+
   const editedCategoryIndex = getValues('categories').findIndex(
     (obj: Category) => obj.id === category?.id
   );
   const editedModelIndex = getValues('businessModels').findIndex(
     (obj: Model) => obj.id === businessModel?.id
   );
+
   const editedItemName =
     (category && getValues(`categories[${editedCategoryIndex}].name`)) ||
     (businessModel && getValues(`businessModels[${editedModelIndex}].name`)) ||
     (costs && costs) ||
     (trl && trl.name);
-  const editableItem =
-    isEditPage && (category || businessModel || trl) && editedItemName;
-  const itemId =
-    getValues(`categories[${editedCategoryIndex}].id`) ||
-    getValues(`businessModels[${editedModelIndex}].id`) ||
-    getValues(`trl.id`) ||
-    category?.id ||
-    trl?.id ||
-    businessModel?.id;
+
+  const itemId = category?.id || trl?.id || businessModel?.id;
+  const editableItem = (category || businessModel || trl) && editedItemName;
   const showEditIcon = editableItem && !editItemMode;
-  const showSelect = editItemMode && trl && isEditPage;
+  const showSelect = editItemMode && trl;
   const showInput = editItemMode && (category || businessModel);
 
   let editedItemIndex;
@@ -63,20 +55,18 @@ function OfferDetailsLabel({
 
   return (
     <>
-      {((isEditPage && editedItemName) || !isEditPage) && (
+      {editedItemName && (
         <span
           key={itemId || 'costs'}
           className='py-[0.3125rem] px-[.875rem] bg-greyBorder rounded-[1.25rem] text-[.875rem] flex items-center'
         >
-          {!isEditPage && <p>{itemName}</p>}
-          {editPageNotEditItemMode && (
+          {!editItemMode && (
             <p onClick={handleEditIconClick}>{editedItemName}</p>
           )}
           {showEditIcon && <EditIcon handleClick={handleEditIconClick} />}
           {showSelect && <Select />}
           {showInput && (
-            <Input
-              editItemMode
+            <EditItemInput
               setEditItemMode={setEditItemMode}
               type={
                 (category && 'category') || (businessModel && 'business model')
@@ -90,4 +80,4 @@ function OfferDetailsLabel({
   );
 }
 
-export default OfferDetailsLabel;
+export default DetailsLabelEdit;

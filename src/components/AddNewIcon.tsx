@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useFormContext } from 'react-hook-form';
 
@@ -7,33 +7,22 @@ type AddNewIconProps = {
 };
 
 function AddNewIcon({ type }: AddNewIconProps) {
-  const [addingNewLabel, setAddingNewLabel] = useState(false);
-
   const { register, getValues, setValue, watch } = useFormContext();
-
-  useEffect(() => {
-    if (addingNewLabel) {
-      const inputElement = document.getElementById('add-input');
-      inputElement?.focus();
-    }
-  }, [addingNewLabel]);
+  const [addingNewLabel, setAddingNewLabel] = useState(false);
+  const arrayName = type === 'category' ? 'categories' : 'businessModels';
 
   const handleAddNewLabelClick = () => {
     setAddingNewLabel(true);
   };
 
   const handleNewLabelSubmit = () => {
-    if (getValues('add').trim() !== '') {
+    const inputValue = getValues('add').trim();
+
+    if (inputValue !== '') {
       const id = uuidv4();
-      if (type === 'category') {
-        const resetCategories = watch('categories');
-        resetCategories.push({ id, name: getValues('add') });
-        setValue('categories', resetCategories);
-      } else if (type === 'business model') {
-        const resetModels = watch('businessModels');
-        resetModels.push({ id, name: getValues('add') });
-        setValue('businessModels', resetModels);
-      }
+      const resetItems = watch(arrayName);
+      resetItems.push({ id, name: inputValue });
+      setValue(arrayName, resetItems);
       setValue('add', '');
       setAddingNewLabel(false);
     }
@@ -48,8 +37,7 @@ function AddNewIcon({ type }: AddNewIconProps) {
     if (e.key === 'Escape') {
       setValue('add', '');
       setAddingNewLabel(false);
-    }
-    if (e.key === 'Enter') {
+    } else if (e.key === 'Enter') {
       e.preventDefault();
       handleNewLabelSubmit();
     }
@@ -60,7 +48,7 @@ function AddNewIcon({ type }: AddNewIconProps) {
       {!addingNewLabel ? (
         <span
           onClick={handleAddNewLabelClick}
-          className='border-greyBorderEdit rounded-full cursor-pointer font-semibold bg-gray-200 text-black flex justify-center items-center text-lg border w-5 h-5'
+          className='border-greyBorder rounded-full cursor-pointer font-semibold bg-gray-200 text-black flex justify-center items-center text-lg border w-5 h-5'
         >
           +
         </span>
@@ -69,12 +57,11 @@ function AddNewIcon({ type }: AddNewIconProps) {
           <input
             {...register('add')}
             type='text'
-            id='add-input'
             className='bg-[transparent] border-none outline-0'
-            // value={newLabelName}
             onBlur={handleBlur}
             onKeyDown={handleKeyDown}
             placeholder={`Enter new ${type}`}
+            autoFocus
           />
         </div>
       )}
