@@ -1,10 +1,10 @@
-# CREATE A .env FILE BEFORE STARTING!!!
+# UPDATE THE .env FILE BEFORE STARTING!!!
 
-You need to create a ".env" file and add it to the root folder. \
+You need to edit the ".env" file. \
 The file should include the following three config settings:
 
 
-REACT_APP_GOOGLE_API_KEY=ADD_YOUR_GOOGLE_API_KEY_HERE \
+REACT_APP_GOOGLE_API_KEY=ADD_YOUR_OWN_GOOGLE_API_KEY_HERE_OTHERWISE_IT_WON'T_WORK \
 REACT_APP_API_BASE_URL=https://api-test.innoloft.com \
 REACT_APP_APP_ID=WRITE_1_OR_2_HERE
 
