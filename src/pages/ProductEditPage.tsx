@@ -46,7 +46,7 @@ function ProductEditPage() {
             <div className='p-5 md:border-l border-greyBorder md:w-[32.138%] md:pr-0'>
               <div>
                 <CompanyLogo />
-                <ProductOwner owner='true!' />
+                <ProductOwner owner={true} />
               </div>
               <Map />
             </div>

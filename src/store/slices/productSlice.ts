@@ -5,7 +5,7 @@ import { fetchProduct } from '../thunks/fetchProduct';
 const initialState: ProductState = {
   data: null,
   loading: false,
-  error: null,
+  error: '',
 };
 
 const productSlice = createSlice({
@@ -20,14 +20,14 @@ const productSlice = createSlice({
     builder
       .addCase(fetchProduct.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.error = '';
       })
       .addCase(
         fetchProduct.fulfilled,
         (state, action: PayloadAction<Product>) => {
           state.data = action.payload;
           state.loading = false;
-          state.error = null;
+          state.error = '';
         }
       )
       .addCase(fetchProduct.rejected, (state, action) => {

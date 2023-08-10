@@ -1,5 +1,3 @@
-// /src/store/types.ts
-
 export type Trl = {
   id: string;
   name: string;
@@ -28,16 +26,12 @@ export type EditedData = {
   businessModels?: Model[];
 };
 
-// Product type
 export type Product = {
   id: number;
   name: string;
   description: string;
   picture: string;
-  type: {
-    id: string;
-    name: string;
-  };
+  type: Type;
   categories: Category[];
   implementationEffortText: string | null;
   investmentEffort: string;
@@ -72,9 +66,15 @@ export type Product = {
   businessModels: Model[];
 };
 
-// Loading and error states
 export type ProductState = {
   data: Product | null;
   loading: boolean;
-  error: string | null;
+  error: string;
+};
+
+export type Config = {
+  id: number;
+  logo: string;
+  mainColor: string;
+  hasUserSection: boolean;
 };

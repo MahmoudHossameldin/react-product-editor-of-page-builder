@@ -25,7 +25,7 @@ function ProductDescription() {
           <input
             {...register('name')}
             type='text'
-            className='border px-[.625rem] py-[.3125rem] rounded-md mr-2 md:mr-0 font-semibold text-[.875rem] border-greyBorderEdit w-full mb-[.625rem]'
+            className='border px-[.625rem] py-[.3125rem] rounded-md mr-2 md:mr-0 font-semibold text-[.875rem] border-greyBorderEdit w-full mb-[.625rem] text-greyTitles'
             onBlur={handleBlur}
             onKeyDown={handleKeyDown}
           />

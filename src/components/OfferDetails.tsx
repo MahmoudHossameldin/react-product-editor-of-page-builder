@@ -10,7 +10,7 @@ function OfferDetails() {
 
   return (
     <div className='px-[.625rem] py-5 md:px-5 md:py-[1.875rem] bg-white mb-5 '>
-      <h2 className='font-semibold mb-5'>Offer details</h2>
+      <h2 className='font-semibold mb-5 text-greyTitles'>Offer details</h2>
       {data && (
         <div>
           <div className='md:flex md:gap-x-10'>

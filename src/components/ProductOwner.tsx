@@ -4,8 +4,8 @@ import { useAppSelector } from '../store';
 import className from 'classnames';
 
 type ProductOwnerProps = {
-  sidebar?: string;
-  owner?: string;
+  sidebar?: boolean;
+  owner?: boolean;
 };
 
 function ProductOwner({ sidebar, owner }: ProductOwnerProps) {
@@ -19,19 +19,24 @@ function ProductOwner({ sidebar, owner }: ProductOwnerProps) {
   });
 
   const { data } = useAppSelector((state) => state.product);
+  const { configData } = useAppSelector((state) => state.config);
 
   return (
-    <div className={classes}>
-      <div>
-        <img className='rounded-[50%]' src={photo} alt='user' />
-      </div>
-      <div>
-        <p className={nameClasses}>
-          {data?.user.firstName} {data?.user.lastName}
-        </p>
-        <p className='text-sm'>{data?.company.name}</p>
-      </div>
-    </div>
+    <>
+      {configData?.hasUserSection && (
+        <div className={classes}>
+          <div>
+            <img className='rounded-[50%]' src={photo} alt='user' />
+          </div>
+          <div>
+            <p className={nameClasses}>
+              {data?.user.firstName} {data?.user.lastName}
+            </p>
+            <p className='text-sm'>{data?.company.name}</p>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

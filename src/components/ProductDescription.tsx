@@ -7,7 +7,7 @@ function ProductDescription() {
 
   return (
     <div className='p-5'>
-      <h1 className='font-semibold'>{data?.name}</h1>
+      <h1 className='font-semibold text-greyTitles'>{data?.name}</h1>
       {data?.description && (
         <p
           className='text-greyText text-[.875rem] leading-6 mt-[.625rem]'

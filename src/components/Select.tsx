@@ -8,6 +8,8 @@ function Select() {
   const [trlOptions, setTrlOptions] = useState<Trl[]>([]);
   const { register, setValue, watch } = useFormContext();
   const { data } = useAppSelector((state) => state.product);
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+  const trlApiUrl = `${API_BASE_URL}/trl/`;
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = e.target.value;
@@ -19,18 +21,20 @@ function Select() {
   };
 
   useEffect(() => {
-    axios
-      .get('https://api-test.innoloft.com/trl/')
-      .then((response) => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(trlApiUrl);
         setTrlOptions(response.data);
         const trlValue = watch('trl');
         setValue('trl', trlValue || data?.trl);
-      })
-      .catch((error) =>
+      } catch (error) {
         setTrlOptions([
           { id: 'error', name: `Error fetching other TRL options!` },
-        ])
-      );
+        ]);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (
