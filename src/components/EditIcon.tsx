@@ -1,6 +1,5 @@
 import React from 'react';
 import edit from '../assets/edit.svg';
-import { Category, Model } from '../store/types';
 
 type EditIconProps = {
   handleClick?: () => void;

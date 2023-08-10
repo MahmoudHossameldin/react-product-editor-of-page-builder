@@ -15,7 +15,7 @@ function ProductPage() {
 
   useEffect(() => {
     dispatch(setViewMode());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className='mt-5 px-[.6875rem] md:pl-0 min-[1460px]:px-0 max-w-[70.5rem] w-full'>

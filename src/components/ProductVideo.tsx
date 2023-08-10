@@ -11,6 +11,7 @@ function ProductVideo() {
       {youtubeEmbedUrl && (
         <div className='max-w-[44.6875rem] mx-auto relative overflow-hidden w-full aspect-video max-h-[25rem]'>
           <iframe
+            title='product video'
             src={youtubeEmbedUrl}
             className='absolute top-0 left-0 bottom-0 right-0 w-full h-full'
           ></iframe>
