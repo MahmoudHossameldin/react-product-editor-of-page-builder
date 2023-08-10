@@ -1,6 +1,6 @@
 Live site URLS: \
 https://innoloft-task.netlify.app/product \
-https://innoloft-task.netlify.app/product/edit \
+https://innoloft-task.netlify.app/product/edit 
 
 # UPDATE THE .env FILE BEFORE STARTING!!!
 
