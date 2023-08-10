@@ -16,7 +16,7 @@ function Header() {
           <img
             src={configData?.logo || logo}
             alt='Innoloft Logo'
-            className='brightness-0	invert'
+            className='brightness-0	invert max-h-[1.625rem]'
           />
         </Link>
       </div>
