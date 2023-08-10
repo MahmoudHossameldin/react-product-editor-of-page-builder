@@ -9,7 +9,7 @@ function CompanyLogo() {
     <>
       {configData?.hasUserSection && (
         <div>
-          <p className='font-semibold'>Offered By</p>
+          <p className='font-semibold text-greyTitles'>Offered By</p>
           <img
             src={data?.company.logo}
             alt={data?.company.name}

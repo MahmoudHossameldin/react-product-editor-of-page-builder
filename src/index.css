@@ -21,6 +21,11 @@ body {
   box-sizing: border-box;
 }
 
+button:hover,
+a:hover {
+  opacity: 0.75;
+}
+
 /* Map container */
 .map-container {
   height: 100%;
