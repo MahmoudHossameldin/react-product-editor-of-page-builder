@@ -45,7 +45,11 @@ function Select() {
         className='bg-[transparent] border-none outline-0 w-full cursor-pointer'
       >
         {trlOptions.map((option) => (
-          <option key={option.id} value={option.name}>
+          <option
+            key={option.id}
+            value={option.name}
+            disabled={option.id === 'error'}
+          >
             {option.name}
           </option>
         ))}
